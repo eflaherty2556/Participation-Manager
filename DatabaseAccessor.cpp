@@ -4,11 +4,13 @@
  *  Created on: Sep 29, 2020
  *      Author: joey
  */
-//g++ dbTest.cpp -lsqlite3 -o dbTest.out
+//g++ DatabaseAccessor.cpp -lsqlite3 -o dbTest.out
 #include <stdio.h>
 #include <stdlib.h>
 #include <sqlite3.h>
 #include <string>
+
+#include "User.h"
 
 class databaseAccessor 
 {
@@ -30,7 +32,7 @@ class databaseAccessor
       }
 
       //used to print database
-      static int callback(void *NotUsed, int argc, char **argv, char **azColName)
+      static int printCallback(void *NotUsed, int argc, char **argv, char **azColName)
       {
          printf("Users:\n");
          for (int i = 0; i < argc; i++)
@@ -53,7 +55,7 @@ class databaseAccessor
                "LASTLOGTIME TEXT," //ISO8601 format (YYYY-MM-DD HH:MM:SS.SSS)
                "ISLOGGEDIN INTEGER );"; //boolean value
 
-         int resultCode = sqlite3_exec(database, table, callback, 0, &errorMessage);
+         int resultCode = sqlite3_exec(database, table, NULL, 0, &errorMessage);
 
          if(resultCode != SQLITE_OK)
          {
@@ -77,7 +79,7 @@ class databaseAccessor
          sprintf(record, baseCommand, 
             id, name.c_str(), hours, lastLogTime.c_str(), isLoggedIn);
 
-         int resultCode = sqlite3_exec(database, record, callback, 0, &errorMessage);
+         int resultCode = sqlite3_exec(database, record, NULL, 0, &errorMessage);
          free(record);
 
          if(resultCode != SQLITE_OK)
@@ -98,7 +100,7 @@ class databaseAccessor
          char *errorMessage;  
          char const *command = "SELECT * from USERS";
 
-         int resultCode = sqlite3_exec(database, command, callback, 0, &errorMessage);
+         int resultCode = sqlite3_exec(database, command, printCallback, 0, &errorMessage);
 
          if(resultCode != SQLITE_OK)
          {
@@ -109,6 +111,36 @@ class databaseAccessor
             fprintf(stdout, "Table printed successfully!\n");
 
          sqlite3_close(database);
+      }
+
+      static User getUser(int id)
+      {
+         // openDatabase();
+
+         // sqlite3_stmt *statement;
+         // char *errorMessage;
+         // char *record = (char *)malloc(sizeof(char) * 128);  
+         // char const *baseCommand = "SELECT * from USERS"
+         //                         "WHERE ID=%d";
+
+         // sprintf(record, baseCommand, id);
+
+         // int resultCode = sqlite3_prepare_v2(database, record, -1, &statement, NULL);
+
+         // if(resultCode != SQLITE_OK)
+         // {
+         //    fprintf(stderr, "SQL error in getUser: %s\nResult code: %d\n", errorMessage, resultCode);
+         //    free(errorMessage);
+         // }
+         // else
+         //    fprintf(stdout, "User got successfully!\n");
+
+
+
+         // sqlite3_close(database);
+
+         User testUser1(0, "Joey", 5, "2020-10-01 17:25:30.000", false);
+         return testUser1;
       }
 
       static void updateRecord(int id, int hours, std::string lastLogTime, int isLoggedIn)
@@ -127,7 +159,7 @@ class databaseAccessor
          sprintf(record, baseCommand, 
             hours, lastLogTime.c_str(), isLoggedIn, id);
 
-         int resultCode = sqlite3_exec(database, record, callback, 0, &errorMessage);
+         int resultCode = sqlite3_exec(database, record, NULL, 0, &errorMessage);
          free(record);
 
          if(resultCode != SQLITE_OK)
@@ -152,7 +184,7 @@ class databaseAccessor
 
          sprintf(record, baseCommand, id);
 
-         int resultCode = sqlite3_exec(database, record, callback, 0, &errorMessage);
+         int resultCode = sqlite3_exec(database, record, NULL, 0, &errorMessage);
          free(record);
 
          if(resultCode != SQLITE_OK)
@@ -178,4 +210,7 @@ int main(int argc, char *argv[])
    databaseAccessor::printAllRecords();
    databaseAccessor::deleteRecord(0);
    databaseAccessor::printAllRecords();
+   
+   User myUser = databaseAccessor::getUser(0);
+   printf("Name: %s", myUser.getName().c_str());
 }
