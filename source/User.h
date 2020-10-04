@@ -13,16 +13,18 @@ class User
 	private:
 		int id;
 		string name;
-		int hours;
+		string timeSpent;
 		string lastLogTime;
 		bool isLoggedIn;
+		int privilege;
 
 	public:
-		User(int id, string name, int hours, string lastLogTime, bool isLoggedIn);
+		User(int id, string name, string timeSpent, string lastLogTime, bool isLoggedIn, int privilege);
 
 		int getId();
 		string getName();
-		int getHours();
+		string getTimeSpent();
 		string getLastLogTime();
 		bool getIsLoggedIn();
+		int getPrivilege();
 };

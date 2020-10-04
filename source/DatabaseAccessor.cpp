@@ -8,6 +8,7 @@
 
 #include "DatabaseAccessor.h"
 
+
 int DatabaseAccessor::openDatabase()
 {
    int databaseConnection = sqlite3_open("users.db", &database);
@@ -36,11 +37,11 @@ int DatabaseAccessor::printCallback(void *NotUsed, int argc, char **argv, char *
 //used to get elements from the database
 int DatabaseAccessor::getCallback(void *NotUsed, int argc, char **argv, char **azColName)
 {
-   const int elementsPerUser = 5;
+   const int elementsPerUser = 6;
 
    for(int i = 0; i < argc; i+=elementsPerUser)
    {
-      User *foundUser = new User(atoi(argv[i]), argv[i+1], atoi(argv[i+2]), argv[i+3], atoi(argv[i+4]));
+      User *foundUser = new User(atoi(argv[i]), argv[i+1], argv[i+2], argv[i+3], atoi(argv[i+4]), atoi(argv[i+5]));
       resultsBuffer->push_back(foundUser);
    }
    
@@ -55,9 +56,10 @@ void DatabaseAccessor::createUserTable()
    char const *table = "CREATE TABLE IF NOT EXISTS USERS(" 
          "ID INT PRIMARY KEY NOT NULL," 
          "NAME TEXT NOT NULL," 
-         "HOURS INT,"
+         "TIMESPENT TEXT," //ISO8601 format (YYYY-MM-DD HH:MM:SS.SSS)
          "LASTLOGTIME TEXT," //ISO8601 format (YYYY-MM-DD HH:MM:SS.SSS)
-         "ISLOGGEDIN INTEGER );"; //boolean value
+         "ISLOGGEDIN INTEGER," //boolean value
+         "PRIVILEGE INTEGER);"; 
 
    int resultCode = sqlite3_exec(database, table, NULL, 0, &errorMessage);
 
@@ -72,16 +74,18 @@ void DatabaseAccessor::createUserTable()
    sqlite3_close(database);
 }
 
-void DatabaseAccessor::insertNewRecord(int id, string name, int hours, string lastLogTime, int isLoggedIn)
+void DatabaseAccessor::insertNewRecord(int id, string name, string timeSpent, string lastLogTime, int isLoggedIn, int privilege)
 {
    openDatabase();
 
+   printf("debug: %s\n", timeSpent.c_str());
+
    char *errorMessage; 
-   char *record = (char *)malloc(sizeof(char) * 128);
-   const char *baseCommand = "INSERT INTO USERS (ID,NAME,HOURS,LASTLOGTIME,ISLOGGEDIN) VALUES (%d, '%s', %d, '%s', %d ); ";
+   char *record = (char *)malloc(sizeof(char) * 512);
+   const char *baseCommand = "INSERT INTO USERS (ID,NAME,TIMESPENT,LASTLOGTIME,ISLOGGEDIN,PRIVILEGE) VALUES (%d, '%s', '%s', '%s', %d, %d ); ";
 
    sprintf(record, baseCommand, 
-      id, name.c_str(), hours, lastLogTime.c_str(), isLoggedIn);
+      id, name.c_str(), timeSpent.c_str(), lastLogTime.c_str(), isLoggedIn, privilege);
 
    int resultCode = sqlite3_exec(database, record, NULL, 0, &errorMessage);
    free(record);
@@ -89,7 +93,7 @@ void DatabaseAccessor::insertNewRecord(int id, string name, int hours, string la
    if(resultCode != SQLITE_OK)
    {
       fprintf(stderr, "SQL error in insertNewRecord: %s\nResult code: %d\n", errorMessage, resultCode);
-      free(errorMessage);
+      // free(errorMessage);
    }
    else
       fprintf(stdout, "Record inserted successfully!\n");
@@ -173,21 +177,22 @@ vector<User *> *DatabaseAccessor::getAllUsers()
    return results;
 }
 
-void DatabaseAccessor::updateRecord(int id, int hours, string lastLogTime, int isLoggedIn)
+void DatabaseAccessor::updateRecord(int id, string timeSpent, string lastLogTime, int isLoggedIn, int privilege)
 {
    openDatabase();
 
    char *errorMessage; 
    char *record = (char *)malloc(sizeof(char) * 128);
    const char *baseCommand = "UPDATE USERS SET " 
-                              "HOURS=%d," 
+                              "TIMESPENT='%s'," 
                               "LASTLOGTIME='%s'," 
-                              "ISLOGGEDIN=%d " 
+                              "ISLOGGEDIN=%d, "
+                              "PRIVILEGE=%d " 
                               "WHERE ID = %d";
                               
 
    sprintf(record, baseCommand, 
-      hours, lastLogTime.c_str(), isLoggedIn, id);
+      timeSpent.c_str(), lastLogTime.c_str(), isLoggedIn, privilege, id);
 
    int resultCode = sqlite3_exec(database, record, NULL, 0, &errorMessage);
    free(record);
@@ -234,11 +239,11 @@ int main(int argc, char *argv[])
    fprintf(stdout, "Opening and creating a table...\n");
 
    DatabaseAccessor::createUserTable();
-   DatabaseAccessor::insertNewRecord(0, "Joey", 0, "0000-00-00 00:00:00.000", 0);
+   DatabaseAccessor::insertNewRecord(0, "Joey", "0000-00-00 00:00:00.000", "0000-00-00 00:00:00.000", 0, 2);
    DatabaseAccessor::printAllRecords();
-   DatabaseAccessor::updateRecord(0, 3, "2020-09-30 15:53:30.000", 1);
+   DatabaseAccessor::updateRecord(0, "0000-00-00 01:00:00.000", "2020-09-30 15:53:30.000", 1, 2);
    DatabaseAccessor::printAllRecords();
-   DatabaseAccessor::insertNewRecord(1, "Jeff", 4, "1234-56-78 12:34:56.789", 0);
+   DatabaseAccessor::insertNewRecord(1, "Jeff", "0000-00-00 00:00:00.000", "1234-56-78 12:34:56.789", 0, 1);
    DatabaseAccessor::printAllRecords();
    // DatabaseAccessor::deleteRecord(0);
    // DatabaseAccessor::printAllRecords();
@@ -248,7 +253,7 @@ int main(int argc, char *argv[])
    vector<User *> *requestResults = DatabaseAccessor::getUser(0);
    User *myUser = requestResults->front();
    string name = myUser->getName();
-   printf("!Name: %s\n", name.c_str());
+   printf("!NAME: %s\n", name.c_str());
 
    printf("\nget all users:\n");
 
@@ -256,7 +261,7 @@ int main(int argc, char *argv[])
    for(int i = 0; i < requestResults->size(); i++)
    {
       User *theUser = requestResults->at(i);
-      printf("!Name: %s\n", (theUser->getName()).c_str());
+      printf("!NAME: %s\n", (theUser->getName()).c_str());
    }
 
    delete myUser;

@@ -1,37 +1,43 @@
 #include "User.h"
 
-User::User(int id, string name, int hours, string lastLogTime, bool isLoggedIn)
+User::User(int id, string name, string timeSpent, string lastLogTime, bool isLoggedIn, int privilege)
 {
 	this->id = id;
 	this->name = name;
-	this->hours = hours;
+	this->timeSpent = timeSpent;
 	this->lastLogTime = lastLogTime;
 	this->isLoggedIn = isLoggedIn;
+	this->privilege = privilege;
 }
 
 int User::getId()
 {
-	return id;
+	return this->id;
 }
 
 string User::getName()
 {
-	return name;
+	return  this->name;
 }
 
-int User::getHours()
+string User::getTimeSpent()
 {
-	return hours;
+	return  this->timeSpent;
 }
 
 string User::getLastLogTime()
 {
-	return lastLogTime;
+	return  this->lastLogTime;
 }
 
 bool User::getIsLoggedIn()
 {
-	return isLoggedIn;
+	return  this->isLoggedIn;
+}
+
+int User::getPrivilege()
+{
+	return this->privilege;
 }
 
 
