@@ -2,10 +2,11 @@ using namespace std;
 
 class Request
 {
-	private:
-		enum RequestType type = getUser;
 	public:
-		enum RequestType {GetUser, GetAllUsers};
+		enum RequestType {GetUser = 0, GetAllUsers, UpdateUser};
 
-		enum RequestType getType(); //for implementation: enum Request::RequestType Request::getType(){} 
+		RequestType getType(); //for implementation: enum Request::RequestType Request::getType(){} 
+		vector<T *> * useRequest();
+	private:
+		enum RequestType type;
 };
