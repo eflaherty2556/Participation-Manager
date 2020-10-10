@@ -5,7 +5,7 @@ using namespace std;
 class GetUserRequest: public Request
 {
 	private:
-		enum RequestType type = GetUser;
+		RequestType type = GetUser;
 		int id = 0;
 	public:
 		GetUserRequest(int id)
@@ -14,14 +14,14 @@ class GetUserRequest: public Request
 		}
 
 		//enum Request::RequestType Request::getType(){}
-		enum RequestType getType()
+		RequestType getType()
 		{
-			return type;
+			return this->type;
 		}
 
 		int getId()
 		{
-			return id;
+			return this->id;
 		}
 
 		vector<User *> *useRequest()

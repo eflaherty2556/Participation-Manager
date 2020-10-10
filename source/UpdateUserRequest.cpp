@@ -2,10 +2,10 @@
 
 using namespace std;
 
-class GetUserRequest: public Request
+class UpdateUserRequest: public Request
 {
 	private:
-		enum RequestType type = UpdateUser;
+		RequestType type = UpdateUser;
 
 		int newId;
 		string newTimeSpent; 
@@ -13,7 +13,7 @@ class GetUserRequest: public Request
 		int newIsLoggedIn; 
 		int newPrivilege;
 	public:
-		GetAllUsersRequest(int newId, string newTimeSpent, string newLastLogTime, int newIsLoggedIn, int newPrivilege)
+		UpdateUserRequest(int newId, string newTimeSpent, string newLastLogTime, int newIsLoggedIn, int newPrivilege)
 		{
 			this->newId = newId;
 			this->newTimeSpent = newTimeSpent;
@@ -23,39 +23,41 @@ class GetUserRequest: public Request
 		}
 
 		//enum Request::RequestType Request::getType(){}
-		enum RequestType getType()
+		RequestType getType()
 		{
-			return type;
+			return this->type;
 		}
 
 		int getNewId()
 		{
-			return newId;
+			return this->newId;
 		}
 
 		string getNewTimeSpent()
 		{
-			return newTimeSpent;
+			return this->newTimeSpent;
 		}
 
 		string getNewLastLogTime()
 		{
-			return getNewLastLogTime;
+			return this->newLastLogTime;
 		}
 
 		int getNewIsLoggedIn()
 		{
-			return newIsLoggedIn;
+			return this->newIsLoggedIn;
 		}
 
 		int getNewPrivilege()
 		{
-			return newPrivilege;
+			return this->newPrivilege;
 		}
 
 		vector<User *> *useRequest()
 		{
-			DatabaseAccessor::updateRecord();
+			DatabaseAccessor::updateRecord(this->newId, this->newTimeSpent, 
+				this->newLastLogTime, this->newIsLoggedIn, this->newPrivilege);
+
 			return new vector<User *>;
 		}
 };
