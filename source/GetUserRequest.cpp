@@ -1,4 +1,5 @@
 #include "request.h"
+#include "GetUserResult.cpp"
 
 using namespace std;
 
@@ -27,5 +28,10 @@ class GetUserRequest: public Request
 		vector<User *> *useRequest()
 		{
 			return DatabaseAccessor::getUser(this->id);
+		}
+
+		Result *packageResults(vector<User *> *rawResults)
+		{
+			return new GetUserResult(rawResults);
 		}
 };

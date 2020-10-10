@@ -1,4 +1,4 @@
-#include "DatabaseAccessor.h"
+#include "result.h"
 
 using namespace std;
 
@@ -8,7 +8,8 @@ class Request
 		enum RequestType {GetUser = 0, GetAllUsers, UpdateUser};
 
 		RequestType getType(); //for implementation: enum Request::RequestType Request::getType(){} 
-		vector<User *> * useRequest();
+		vector<User *> *useRequest();
+		Result *packageResults(vector<User *> *rawResults);
 	private:
 		RequestType type;
 };

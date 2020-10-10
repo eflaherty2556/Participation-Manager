@@ -1,4 +1,6 @@
 #include "request.h"
+#include "UpdateUserResult.cpp"
+
 
 using namespace std;
 
@@ -58,6 +60,11 @@ class UpdateUserRequest: public Request
 			DatabaseAccessor::updateRecord(this->newId, this->newTimeSpent, 
 				this->newLastLogTime, this->newIsLoggedIn, this->newPrivilege);
 
-			return new vector<User *>;
+			return NULL;
+		}
+
+		Result *packageResults(vector<User *> *rawResults)
+		{
+			return new UpdateUserResult();
 		}
 };

@@ -1,4 +1,6 @@
 #include "request.h"
+#include "GetAllUsersResult.cpp"
+
 
 using namespace std;
 
@@ -16,5 +18,10 @@ class GetAllUsersRequest: public Request
 		vector<User *> *useRequest()
 		{
 			return DatabaseAccessor::getAllUsers();
+		}
+
+		Result *packageResults(vector<User *> *rawResults)
+		{
+			return new GetAllUsersResult(rawResults);
 		}
 };
