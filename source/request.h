@@ -1,3 +1,4 @@
+#pragma once
 #include "result.h"
 
 using namespace std;

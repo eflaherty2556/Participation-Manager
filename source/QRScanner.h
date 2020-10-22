@@ -20,7 +20,7 @@ class QRScanner
 			vector <Point> location;
 		} decodedObject;
 
-		static void decode(Mat &image, vector<decodedObject>&decodedObjects);
+		static bool decode(Mat &image, vector<decodedObject>&decodedObjects);
 	private:
 
 };

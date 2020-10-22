@@ -1,8 +1,5 @@
 #include "Requester.h"
 
-#include "GetAllUsersRequest.cpp"
-#include "GetAllUsersResult.cpp"
-
 Result *Requester::makeRequest(Request *request)
 {
 	vector<User *> *rawResults = request->useRequest();
@@ -11,10 +8,17 @@ Result *Requester::makeRequest(Request *request)
 
 int main(int argc, char *argv[])
 {
-   printf("Testing Requester:::\n");
-   Request *myRequest = new GetAllUsersRequest();
+	printf("Testing Requester:::\n");
+	Request *myRequest = new GetAllUsersRequest();
 
-   GetAllUsersResult *myResults = Requester::makeRequest(myRequest);
+	GetAllUsersResult *myResults = (GetAllUsersResult *)Requester::makeRequest(myRequest);
+	vector<User *> *myUsers = myResults->getResults();
 
+	printf("Printing users: \n");
+	for(int i = 0; i < myUsers->size(); i++)
+	{
+		User *theUser = myUsers->at(i);
+		printf("name: '%s'\n", (theUser->getName()).c_str());
+	}
 }
 

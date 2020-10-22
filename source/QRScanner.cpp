@@ -1,8 +1,10 @@
 #include "QRScanner.h"
 
 // template <typename decodedObject>
-void QRScanner::decode(Mat &image, vector<decodedObject>&decodedObjects)
+bool QRScanner::decode(Mat &image, vector<decodedObject>&decodedObjects)
 {
+	bool foundAQRCode = false;
+
 	ImageScanner scanner;
 	scanner.set_config(ZBAR_NONE, ZBAR_CFG_ENABLE, 1);
 
@@ -15,6 +17,8 @@ void QRScanner::decode(Mat &image, vector<decodedObject>&decodedObjects)
 
 	for(Image::SymbolIterator symbol = zbarImage.symbol_begin(); symbol != zbarImage.symbol_end(); ++symbol)
 	{
+		foundAQRCode = true;
+
 		decodedObject object;
 
 		object.type = symbol->get_type_name();
@@ -27,6 +31,8 @@ void QRScanner::decode(Mat &image, vector<decodedObject>&decodedObjects)
 		
 		decodedObjects.push_back(object);
 	}
+
+	return foundAQRCode;
 }
 
 int main(int argc, char *argv[])
@@ -36,7 +42,8 @@ int main(int argc, char *argv[])
 
   vector<QRScanner::decodedObject> decodedObjects;
 
-  QRScanner::decode(image, decodedObjects);
+  bool found = QRScanner::decode(image, decodedObjects);
+  printf("Found: %s\n", found ? "yes" : "no");
 
   return 0;
 }
