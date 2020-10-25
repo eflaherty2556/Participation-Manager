@@ -234,35 +234,35 @@ void DatabaseAccessor::deleteRecord(int id)
 }    
 
 
-int main(int argc, char *argv[])
-{
-   fprintf(stdout, "Opening and creating a table...\n");
+// int main(int argc, char *argv[])
+// {
+//    fprintf(stdout, "Opening and creating a table...\n");
 
-   DatabaseAccessor::createUserTable();
-   DatabaseAccessor::insertNewRecord(0, "Joey", "0000-00-00 00:00:00.000", "0000-00-00 00:00:00.000", 0, 2);
-   DatabaseAccessor::printAllRecords();
-   DatabaseAccessor::updateRecord(0, "0000-00-00 01:00:00.000", "2020-09-30 15:53:30.000", 1, 2);
-   DatabaseAccessor::printAllRecords();
-   DatabaseAccessor::insertNewRecord(1, "Jeff", "0000-00-00 00:00:00.000", "1234-56-78 12:34:56.789", 0, 1);
-   DatabaseAccessor::printAllRecords();
-   // DatabaseAccessor::deleteRecord(0);
-   // DatabaseAccessor::printAllRecords();
+//    DatabaseAccessor::createUserTable();
+//    DatabaseAccessor::insertNewRecord(0, "Joey", "0000-00-00 00:00:00.000", "0000-00-00 00:00:00.000", 0, 2);
+//    DatabaseAccessor::printAllRecords();
+//    DatabaseAccessor::updateRecord(0, "0000-00-00 01:00:00.000", "2020-09-30 15:53:30.000", 1, 2);
+//    DatabaseAccessor::printAllRecords();
+//    DatabaseAccessor::insertNewRecord(1, "Jeff", "0000-00-00 00:00:00.000", "1234-56-78 12:34:56.789", 0, 1);
+//    DatabaseAccessor::printAllRecords();
+//    // DatabaseAccessor::deleteRecord(0);
+//    // DatabaseAccessor::printAllRecords();
 
-   printf("\nget 1 user:\n");
+//    printf("\nget 1 user:\n");
 
-   vector<User *> *requestResults = DatabaseAccessor::getUser(0);
-   User *myUser = requestResults->front();
-   string name = myUser->getName();
-   printf("!NAME: %s\n", name.c_str());
+//    vector<User *> *requestResults = DatabaseAccessor::getUser(0);
+//    User *myUser = requestResults->front();
+//    string name = myUser->getName();
+//    printf("!NAME: %s\n", name.c_str());
 
-   printf("\nget all users:\n");
+//    printf("\nget all users:\n");
 
-   requestResults = DatabaseAccessor::getAllUsers();
-   for(int i = 0; i < requestResults->size(); i++)
-   {
-      User *theUser = requestResults->at(i);
-      printf("!NAME: %s\n", (theUser->getName()).c_str());
-   }
+//    requestResults = DatabaseAccessor::getAllUsers();
+//    for(int i = 0; i < requestResults->size(); i++)
+//    {
+//       User *theUser = requestResults->at(i);
+//       printf("!NAME: %s\n", (theUser->getName()).c_str());
+//    }
 
-   delete myUser;
-}
+//    delete myUser;
+// }

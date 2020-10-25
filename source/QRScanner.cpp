@@ -1,6 +1,7 @@
 #include "QRScanner.h"
 
-// template <typename decodedObject>
+// RaspiCam_Cv camera;
+
 bool QRScanner::decode(Mat &image, vector<decodedObject>&decodedObjects)
 {
 	bool foundAQRCode = false;
@@ -35,15 +36,44 @@ bool QRScanner::decode(Mat &image, vector<decodedObject>&decodedObjects)
 	return foundAQRCode;
 }
 
-int main(int argc, char *argv[])
+bool QRScanner::setupCamera()
 {
-  string imagepath = argv[1];
-  Mat image = imread(imagepath);
+	camera.set(CAP_PROP_FORMAT, CV_8UC1);
+	bool result = camera.open();
 
-  vector<QRScanner::decodedObject> decodedObjects;
+	if(!result)
+		printf("Error opening camera");
 
-  bool found = QRScanner::decode(image, decodedObjects);
-  printf("Found: %s\n", found ? "yes" : "no");
-
-  return 0;
+	return result;
 }
+
+Mat QRScanner::getImage()
+{
+	Mat capturedImage;
+
+	camera.grab();
+	camera.retrieve(capturedImage);
+
+	return capturedImage;
+}
+
+void QRScanner::shutdownCamera()
+{
+	camera.release();
+}
+
+// int main(int argc, char *argv[])
+// {
+// 	// string imagepath = argv[1];
+// 	// Mat image = imread(imagepath);
+// 	bool result = QRScanner::setupCamera();
+// 	Mat image = QRScanner::getImage();
+// 	QRScanner::shutdownCamera();
+
+// 	vector<QRScanner::decodedObject> decodedObjects;
+
+// 	bool found = QRScanner::decode(image, decodedObjects);
+// 	printf("Found: %s\n", found ? "yes" : "no");
+
+// 	return 0;
+// }
