@@ -15,7 +15,7 @@ find_package( SQLite3 REQUIRED )
 list(APPEND sources "DatabaseAccessor.cpp" "GetAllUsersRequest.cpp" "GetAllUsersResult.cpp")
 list(APPEND sources "GetUserRequest.cpp" "GetUserResult.cpp" "QRScanner.cpp")
 list(APPEND sources "Requester.cpp" "UpdateUserRequest.cpp" "UpdateUserResult.cpp")
-list(APPEND sources "User.cpp")
+list(APPEND sources "User.cpp" "InputMonitor.cpp")
 
 # header files
 list(APPEND headers "DatabaseAccessor.h" "QRScanner.h" "request.h")

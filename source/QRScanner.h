@@ -15,7 +15,7 @@ using namespace raspicam;
 class QRScanner
 {
 	public:
-		typedef struct 
+		typedef struct decodedObject
 		{
 			string type;
 			string data;

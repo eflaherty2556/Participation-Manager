@@ -9,15 +9,15 @@ class UpdateUserRequest: public Request
 	private:
 		RequestType type = UpdateUser;
 
-		int newId;
+		int ID;
 		string newTimeSpent; 
 		string newLastLogTime;
 		int newIsLoggedIn; 
 		int newPrivilege;
 	public:
-		UpdateUserRequest(int newId, string newTimeSpent, string newLastLogTime, int newIsLoggedIn, int newPrivilege)
+		UpdateUserRequest(int ID, string newTimeSpent, string newLastLogTime, int newIsLoggedIn, int newPrivilege)
 		{
-			this->newId = newId;
+			this->ID = ID;
 			this->newTimeSpent = newTimeSpent;
 			this->newLastLogTime = newLastLogTime;
 			this->newIsLoggedIn = newIsLoggedIn;
@@ -30,9 +30,9 @@ class UpdateUserRequest: public Request
 			return this->type;
 		}
 
-		int getNewId()
+		int getID()
 		{
-			return this->newId;
+			return this->ID;
 		}
 
 		string getNewTimeSpent()
@@ -57,7 +57,7 @@ class UpdateUserRequest: public Request
 
 		vector<User *> *useRequest()
 		{
-			DatabaseAccessor::updateRecord(this->newId, this->newTimeSpent, 
+			DatabaseAccessor::updateRecord(this->ID, this->newTimeSpent, 
 				this->newLastLogTime, this->newIsLoggedIn, this->newPrivilege);
 
 			return NULL;
