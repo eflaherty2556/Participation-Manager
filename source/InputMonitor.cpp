@@ -1,5 +1,3 @@
-// scp ./source/*.* pi@raspberrypi:~/Desktop/462Project/source
-
 #include <unistd.h>
 #include <ctime>
 #include <iostream>
@@ -89,9 +87,9 @@ string calculateTimeDifference(string previousTime, string currentTime)
 	int currentTimeValues[6];
 	int differenceTime[6];
 
-	sscanf(previousTime.c_str(), "%d-%d-%dT%d:%d:%dZ", &previousTimeValues[0], &previousTimeValues[1], 
+	sscanf(previousTime.c_str(), "%d-%d-%d %d:%d:%d ", &previousTimeValues[0], &previousTimeValues[1], 
 		&previousTimeValues[2], &previousTimeValues[3], &previousTimeValues[4], &previousTimeValues[5]);
-	sscanf(currentTime.c_str(), "%d-%d-%dT%d:%d:%dZ", &currentTimeValues[0], &currentTimeValues[1], 
+	sscanf(currentTime.c_str(), "%d-%d-%d %d:%d:%d ", &currentTimeValues[0], &currentTimeValues[1], 
 		&currentTimeValues[2], &currentTimeValues[3], &currentTimeValues[4], &currentTimeValues[5]);
 
 	for(int i = 5; i > 0; i--)
@@ -106,7 +104,7 @@ string calculateTimeDifference(string previousTime, string currentTime)
 	differenceTime[0] = currentTimeValues[0] - previousTimeValues[0];
 
 	char timeDifferenceBuffer[sizeof("0000-00-00 00:00:00 ")];
-	sprintf(timeDifferenceBuffer, "%d-%d-%dT%d:%d:%dZ", differenceTime[0], differenceTime[1], 
+	sprintf(timeDifferenceBuffer, "%d-%d-%d %d:%d:%d ", differenceTime[0], differenceTime[1], 
 		differenceTime[2], differenceTime[3], differenceTime[4], differenceTime[5]);
 
 	string timeDifference(timeDifferenceBuffer);
@@ -121,8 +119,8 @@ string calculateNewTimeSpent(string previousTime, string currentTime, string tim
 	int additionalYears, additionalMonths, additionalDays, additionalHours, additionalMinutes, additionalSeconds;
 	int totalHours, totalMinutes, totalSeconds;
 
-	sscanf(timeSpent.c_str(), "%d:%d:%dZ", &spentHours, &spentMinutes, &spentSeconds);
-	sscanf(additionalTime.c_str(), "%d-%d-%dT%d:%d:%dZ", &additionalYears, &additionalMonths, 
+	sscanf(timeSpent.c_str(), "%d:%d:%d ", &spentHours, &spentMinutes, &spentSeconds);
+	sscanf(additionalTime.c_str(), "%d-%d-%d %d:%d:%d ", &additionalYears, &additionalMonths, 
 		&additionalDays, &additionalHours, &additionalMinutes, &additionalSeconds);
 
 	//add individually, rather than dealing with library (https://www.includehelp.com/cpp-programs/add-two-times.aspx)
@@ -134,7 +132,7 @@ string calculateNewTimeSpent(string previousTime, string currentTime, string tim
 	totalSeconds %= 60;
 
 	char timeSpentBuffer[sizeof("00000:00:00 ")];
-	sprintf(timeSpentBuffer, "%d:%d:%dZ", totalHours, totalMinutes, totalSeconds);
+	sprintf(timeSpentBuffer, "%d:%d:%d ", totalHours, totalMinutes, totalSeconds);
 
 	string timeSpentString(timeSpentBuffer);
 	return timeSpentString;
@@ -148,7 +146,7 @@ void updateUserInfo(User *user)
 	time_t currentTime;
 	time(&currentTime);
 	char currentTimeBuffer[sizeof("0000-00-00 00:00:00 ")];
-	strftime(currentTimeBuffer, sizeof(currentTimeBuffer), "%FT%TZ", gmtime(&currentTime));
+	strftime(currentTimeBuffer, sizeof(currentTimeBuffer), "%F %T", gmtime(&currentTime));
 	
 	string currentTimeString(currentTimeBuffer);
 	string timeSpent;
@@ -166,15 +164,7 @@ void updateUserInfo(User *user)
 
 	UpdateUserResult *myResults = (UpdateUserResult *)Requester::makeRequest(myRequest);
 
-
-	// vector<User *> *myUsers = myResults->getResults();
-
-	// printf("Printing users: \n");
-	// for(int i = 0; i < myUsers->size(); i++)
-	// {
-	// 	User *theUser = myUsers->at(i);
-	// 	printf("name: '%s'\n", (theUser->getName()).c_str());
-	// }
+	printf("Successfully Logged in!\n");
 
 }
 
@@ -190,13 +180,13 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	//try to read qrCode for 30 seconds
+	//try to read qrCode for 200 attempts
 	vector<QRScanner::decodedObject> decodedObjects;
-	QRScanner::decodedObject currentObject = NULL;
-	QRScanner::decodedObject previousObject = NULL;
+	QRScanner::decodedObject *currentObject = NULL;
+	QRScanner::decodedObject *previousObject = NULL;
 	Mat newImage;
 	bool foundQR;
-	for(int i = 0; i < 30; i++)
+	for(int i = 0; i < 200; i++)
 	{
 		newImage = QRScanner::getImage();
 		foundQR = QRScanner::decode(newImage, decodedObjects);
@@ -207,21 +197,26 @@ int main(int argc, char *argv[])
 			printDecodedUsers(decodedObjects);
 
 			previousObject = currentObject;
-			currentObject = decodedObjects.at(i);
+			currentObject = &(decodedObjects.at(0));
 
-			if(previousObject == NULL || (currentObject.data != previousObject.data) )
-			
+			if(previousObject == NULL || ((*currentObject).data != (*previousObject).data) )
+			{
 
-			User *user = requestUserInfo(object);
-			printf("User logged in:\n-ID: %d\n-Name: %s\n-Time Spent: %s\n-Last Log Time: %s\n-Logged in?: %d\n-Privilege Level: %d\n", 
-				user->getId(), (user->getName()).c_str(), (user->getTimeSpent()).c_str(), (user->getLastLogTime()).c_str(),
-				 user->getIsLoggedIn(), user->getPrivilege());
+				User *user = requestUserInfo(*currentObject);
+				printf("User logged in:\n-ID: %d\n-Name: %s\n-Time Spent: %s\n-Last Log Time: %s\n-Logged in?: %d\n-Privilege Level: %d\n", 
+					user->getId(), (user->getName()).c_str(), (user->getTimeSpent()).c_str(), (user->getLastLogTime()).c_str(),
+					 user->getIsLoggedIn(), user->getPrivilege());
 
-			updateUserInfo(user);
+				updateUserInfo(user);
+			}
+			else
+			{
+				printf("Ok to remove card.\n");
+			}
 		}
 		else
 		{
-			printf("No QRCode found.\n");
+			printf("Waiting for ID card...\n");
 		}
 
 		usleep(1000); //1 second

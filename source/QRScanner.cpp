@@ -6,11 +6,20 @@ bool QRScanner::decode(Mat &image, vector<decodedObject>&decodedObjects)
 {
 	bool foundAQRCode = false;
 
+	if(image.empty())
+		printf("Image empty!!\n\n");
+
 	ImageScanner scanner;
-	scanner.set_config(ZBAR_QRCODE, ZBAR_CFG_ENABLE, 1);
+	scanner.set_config(ZBAR_NONE, ZBAR_CFG_ENABLE, 1);
+
+	//sanity check for image channels and size
+	//printf("Channels: %d\n", image.channels());
+	//printf("Rows: %d, Cols: %d\n", image.rows, image.cols);
 
 	Mat grayImage;
-	// cvtColor(image, grayImage, COLOR_BGR2GRAY); //for testing with RGB images
+	//printf("Hi :)\n");
+	//cvtColor(image, grayImage, COLOR_BGR2GRAY, 4); //if testing an rgb image
+	//printf("Bye :(\n");
 
 	Image zbarImage(image.cols, image.rows, "Y800", (uchar *)image.data, image.cols * image.rows);
 
