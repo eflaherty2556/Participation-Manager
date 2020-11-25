@@ -1,0 +1,40 @@
+<HTML>
+	<TITLE>FRC Participation Manager Homepage</TITLE>
+	<head>
+		<style>
+			h1 
+			{
+				text-align: center;
+			}
+			p 
+			{
+				text-align: center;
+			}
+			HTML 
+			{
+				background-color: #45364F;
+			}
+			body 
+			{
+				background-color: #BDBAB3;
+				width: 800px;
+				height: 200px;
+				border: 4px solid black;
+				padding: 0 20px 20px 20px;
+				margin: 0 auto;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>FRC Participation Manager</h1>
+		<p>Welcome to the internet!</p>
+		<p>
+			Time: <br>
+			<?php
+				echo "hi";
+				date_default_timezone_set("America/Los_Angeles");
+				echo "The current time in LA is " . date("h:i:sa");	
+			?>
+		</p>
+	</body>
+</HTML>
