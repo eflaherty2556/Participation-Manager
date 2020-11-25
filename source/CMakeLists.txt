@@ -4,7 +4,9 @@ project(ParticipationManager)
 
 # settings
 set(CMAKE_CXX_STANDARD 17)
+set(raspicam_DIR "~/Desktop/raspicam/raspicam/build/")
 #add_compile_definitions(-D_GLIBCXX_USE_CXX11_ABI=0)
+include_directories(${OpenCV_INCLUDE_DIRS} /usr/include)
 
 # requirements
 find_package( OpenCV REQUIRED )
@@ -23,5 +25,4 @@ list(APPEND headers "Requester.h" "result.h" "User.h")
 
 # make executable file and link
 add_executable( ParticipationManager ${sources} ${headers})
-include_directories(${OpenCV_INCLUDE_DIRS})
 target_link_libraries( ParticipationManager ${OpenCV_LIBS} ${ZBAR_LIBRARIES}zbar ${raspicam_CV_LIBS} SQLite::SQLite3)
