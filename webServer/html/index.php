@@ -3,7 +3,7 @@
 	<head>
 		<link rel="stylesheet" href="homepage.css">
 	</head>
-	<body>
+	<body class="grayBox">
 		<h1>FRC Participation Manager</h1>
 		<p>Welcome to the internet!</p>
 		<div class="form">
@@ -19,22 +19,3 @@
 		</p>
 	</body>
 </HTML>
-
-
-<?php
-# password with hash, with pdo to prevent sql injection, password verify with hash
-
-
-if($_SERVER["REQUEST_METHOD"] == "POST")
-{
-        $id = $_POST['idNumber'];
-        #$password = $_POST['password'];
-
-	#echo "ID: " . $id;
-        #echo "Password: " . $password;
-
-
-}
-
-
-?>
