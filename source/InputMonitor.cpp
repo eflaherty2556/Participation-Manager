@@ -8,6 +8,7 @@
 #include "GetUserRequest.cpp"
 #include "UpdateUserRequest.cpp"
 #include "Requester.h"
+#include "LCD.h"
 
 using namespace std;
 
@@ -172,6 +173,11 @@ int main(int argc, char *argv[])
 {
 	printf("Launching input monitor\n");
 
+	//setup LCD
+	LCD::setup();
+	LCD::lcd_write(0, 0, "Welcome!");
+	LCD::lcd_write(0, 1, "Please Sign in:");
+
 	//setup camera
 	bool cameraSetupSuccess = QRScanner::setupCamera();
 	if(!cameraSetupSuccess)
@@ -180,20 +186,24 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	//try to read qrCode for 200 attempts
 	vector<QRScanner::decodedObject> decodedObjects;
 	QRScanner::decodedObject *currentObject = NULL;
 	QRScanner::decodedObject *previousObject = NULL;
 	Mat newImage;
 	bool foundQR;
-	for(int i = 0; i < 200; i++)
+	int lastDisplayedText = -1; //used to prevent the lcd from being updated too frequently
+	bool runForever = true; 
+
+	while(runForever)
 	{
+
 		newImage = QRScanner::getImage();
 		foundQR = QRScanner::decode(newImage, decodedObjects);
 
 		if(foundQR)
-		{
-			printf("QRCode found!\n");
+		{	
+			printf("QRCode found!");
+
 			printDecodedUsers(decodedObjects);
 
 			previousObject = currentObject;
@@ -208,19 +218,54 @@ int main(int argc, char *argv[])
 					 user->getIsLoggedIn(), user->getPrivilege());
 
 				updateUserInfo(user);
+
+				if(lastDisplayedText != 1)
+				{
+					LCD::clear();
+					LCD::lcd_write(0, 0, "Success! You");
+					if(user->getIsLoggedIn())
+						LCD::lcd_write(0, 1, "have logged in");
+					else
+						LCD::lcd_write(0, 1, "have logged out");
+
+					lastDisplayedText = 1; //this is text option 1
+
+					usleep(2000); //2 seconds
+				}
+				
+					
 			}
-			else
+			else //same card as last sample
 			{
 				printf("Ok to remove card.\n");
+
+				if(lastDisplayedText != 2)
+				{
+					LCD::clear();
+					LCD::lcd_write(0, 0, "OK to remove");
+					LCD::lcd_write(0, 1, "your card");
+					lastDisplayedText = 2; //this is text option 2
+				}
+				
 			}
 		}
 		else
 		{
 			printf("Waiting for ID card...\n");
+
+			if(lastDisplayedText != 3)
+			{
+				LCD::clear();
+				LCD::lcd_write(0, 0, "Welcome!");
+				LCD::lcd_write(0, 1, "Please Sign in:");
+				lastDisplayedText = 3; //this is text option 3
+			}
+			
 		}
 
-		usleep(1000); //1 second
+		usleep(2500); //2.5 seconds
 	}
 
 	QRScanner::shutdownCamera();
+	LCD::clear();
 }

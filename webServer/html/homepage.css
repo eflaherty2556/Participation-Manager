@@ -15,16 +15,21 @@ HTML
 	background-color: #45364F;
 }
 
-body 
+body.grayBox
 {
 	background-color: #BDBAB3;
-	width: 800px;
-	height: 400px;
+	width: 1200px;
+	height: 800px;
 	border: 4px solid black;
 	padding: 0 20px 20px 20px;
 	margin: 0 auto;
 }
 
+div.hoursBox
+{
+	width: 1200px;
+	height: 800px;
+}
 
 input[type=text] 
 {
@@ -38,7 +43,7 @@ input[type=text]
 	display: block;
 }
 
-input[type=password] 
+/*input[type=password] 
 {
 	padding: 10px;
 	margin: 10px 0; 
@@ -48,7 +53,7 @@ input[type=password]
 	font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
 	margin: 5 auto;
 	display: block;
-}
+}*/
 
 
 input[type=submit]
@@ -61,6 +66,49 @@ input[type=submit]
 	font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
 	margin: 5 auto;
 	display: block;
+}
+
+button
+{
+	padding: 5px 5px;
+	border: 1px solid #000;
+	border-radius: 1px;	
+	background-color: #DCD0FF;
+	font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
+	margin: 5 auto;
+	display: block;
+	text-align: center;
+}
+
+.add
+{
+	padding: 3px 12px;
+	box-shadow: 4px 4px #888888;
+	border: 0px;	
+	background-color: #A6EFB7;
+	color: white;
+	font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
+	margin: 5 5;
+	font-size: 32px;
+	font-weight: bold;
+}
+
+.add:active, .add:focus {
+  outline: 0;
+  border: none;
+  -moz-outline-style: none;
+}
+
+.add:hover {
+    border: none;
+    background-color: #9CDDAB;
+    box-shadow: 2px 2px #888888;
+
+}
+
+form.addForm
+{
+	float: right;
 }
 
 div.form
@@ -78,25 +126,36 @@ form
 	font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
 }
 
-table
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table.userTable
 {
 	border-collapse: collapse;
 	width: 100%;
-	
 	border: 1px solid #000;
 }
 
-th, td
+td.userTable
 {
 	padding: 15px;
 	text-align: center;
-        border: 0px solid #000;
+    border: 0px solid #000;
 
 }
 
-th
+thead.userTable
 {
 	background: #A28FAE;
+}
+
+th.userTable
+{
+	padding: 15px;
+	text-align: center;
+    border: 0px solid #000;
 }
 
 tr:nth-child(even) 
