@@ -6,15 +6,15 @@ This project is a RaspberryPi-based system designed to log hours for [FIRST Robo
 
 The device:
 
-<img src="https://raw.githubusercontent.com/JFlaherty347/Participation-Manager/master/images/device.png" alt="device" width="500">
+<img src="https://raw.githubusercontent.com/JFlaherty347/Participation-Manager/master/images/device.png" alt="device" width="600">
 
 The web interface:
 
-<img src="https://raw.githubusercontent.com/JFlaherty347/Participation-Manager/master/images/webApp.png" alt="web app" width="500">
+<img src="https://raw.githubusercontent.com/JFlaherty347/Participation-Manager/master/images/webApp.png" alt="web app" width="600">
 
 ## How can a team use this system?
 
-<img src="https://raw.githubusercontent.com/JFlaherty347/Participation-Manager/master/images/flowchart.png" alt="usage flowchart" width="750">
+<img src="https://raw.githubusercontent.com/JFlaherty347/Participation-Manager/master/images/flowchart.png" alt="usage flowchart" width="600">
 
 ## Features
 
