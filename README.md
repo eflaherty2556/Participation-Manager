@@ -2,7 +2,7 @@
 
 ## What is FRC Participation Manager?
 
-This project is a RaspberryPi-based system designed to log hours for [FIRST Robotics Competition](https://www.firstinspires.org/robotics/frc) participants. It includes code that runs on Raspberry Pi (or similar device) to facilitate the physical action of logging in as well as a web interface for members of a team to view their hour contributions. Through the use of this system, FRC teams can improve their sign-in process and generate useful data insights for team management. This device is intended to help growing teams accommodate for increasing team sizes while also improving their experience all around. In the end, teams should be able to use quantitative data 
+This project is a RaspberryPi-based system designed to log hours for [FIRST Robotics Competition](https://www.firstinspires.org/robotics/frc) participants. It includes code that runs on Raspberry Pi (or a similar device) to facilitate the physical action of logging in as well as a web interface for members of a team to view their hour contributions. Through the use of this system, FRC teams can improve their sign-in process and generate useful data insights for team management. This device is intended to help growing teams accommodate for increasing team sizes while also improving their experience all around. In the end, teams should be able to use quantitative data 
 
 The device:
 
@@ -27,7 +27,7 @@ The web interface:
 ## Testing
 
 ### Convenience
-To determine how convenient the device is to use, multiple timed attempts to sign-in on the device were compared to how long a sign-in took on pen and paper.
+To determine how convenient the device is to use, multiple timed attempts to sign in on the device were compared to how long a sign-in took on pen and paper.
 
 The average time using this system was 3.652 seconds whereas pen and paper sign-ins took on average 14.948 seconds to sign in. With an average time save of over 10 seconds, it can be concluded that the device succeeds in its objective to make the sign-in process quicker and easier.
 
@@ -37,7 +37,7 @@ To determine how reliable the device is, several different QR and Barcodes were 
 ### Durability
 With all of the wear and tear that the build season may bring, durability was another important objective of the device. Several different methods of dropping,  shaking, and placing weight on the device all failed to inhibit the device's usability. The device can be considered durable enough to survive reasonable wear that could be experienced in an FRC team's workspace.
 
-## Future improvements should be implemented if time permits
+## Future improvements
 
 * A way to add a user via the web application
 * An easy way to create ID cards from the web application
