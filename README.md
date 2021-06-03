@@ -27,15 +27,15 @@ The web interface:
 ## Testing
 
 ### Convenience
-To determine how convenient the device is to use, multiple timed attempts to sign in on the device were compared to how long a sign-in took on pen and paper.
+To determine how convenient the device is to use, multiple timed attempts to sign-in on the device were compared to how long sign-ins took on pen and paper.
 
 The average time using this system was 3.652 seconds whereas pen and paper sign-ins took on average 14.948 seconds to sign in. With an average time save of over 10 seconds, it can be concluded that the device succeeds in its objective to make the sign-in process quicker and easier.
 
 ### Reliability
-To determine how reliable the device is, several different QR and Barcodes were scanned and averaged their success rate. The device performed with a 100% successful reading rate and no occurrences of a failed reads were witnessed. Hence, it can be determined that the device is reliable enough for use by teams.
+To determine how reliable the device is, several different QR and Barcodes were scanned and their success rate was averaged. The device performed with a 100% successful reading rate and no occurrences of a failed reads were witnessed. Hence, it can be determined that the device is reliable enough for use by teams.
 
 ### Durability
-With all of the wear and tear that the build season may bring, durability was another important objective of the device. Several different methods of dropping,  shaking, and placing weight on the device all failed to inhibit the device's usability. The device can be considered durable enough to survive reasonable wear that could be experienced in an FRC team's workspace.
+With all of the wear and tear that the build season may bring, durability was another important objective of the device. Several different methods of dropping,  shaking, and placing weight on the device all failed to inhibit the device's functionality. The device can be considered durable enough to survive reasonable wear that could be experienced in an FRC team's workspace.
 
 ## Future improvements
 
